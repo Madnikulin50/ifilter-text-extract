@@ -4,6 +4,8 @@
 #include "FiltErr.h"
 #include "NTQuery.h"
 
+#include <algorithm> 
+
 #include <string>
 #include <sstream>
 
@@ -451,14 +453,25 @@ static void cleanUpCharacters(size_t chBuf, wchar_t* buf)
 }
 
 
-STDAPI ExtructText(LPCTSTR fn, int maxLength, LPTSTR out)
+STDAPI ExtractText(const wchar_t* fn, int maxLength, wchar_t* out)
 {
 	
 	HRESULT hr = E_UNEXPECTED;
+	
+	hr = CoInitializeEx(0, COINIT_MULTITHREADED);
+	if (FAILED(hr))
+	{
+		std::cout << "Failed to initialize COM library. Error code = 0x"
+			<< std::hex << hr << std::endl;
+		return hr;
+	}
 
 	try
 	{
 		CComPtr<IUnknown> spIUnk;
+		wprintf(fn);
+		wprintf(L"\r\n");
+		std::wcout << "LoadIFilter for " << fn << std::endl;
 		hr = LoadIFilter(fn, NULL, reinterpret_cast<void**>(&spIUnk));
 
 		if (SUCCEEDED(hr))
@@ -593,8 +606,8 @@ STDAPI ExtructText(LPCTSTR fn, int maxLength, LPTSTR out)
 						}
 					}
 					LPCWSTR temp = wout.str().c_str();
-					memcpy(out, wout.str().c_str(), max(maxLength - 1, wout.str().length()) * sizeof(wchar_t));
-					out[max(maxLength - 1, wout.str().length())] = 0;
+					memcpy((LPWSTR) out, wout.str().c_str(), min(maxLength - 1, wout.str().length()) * sizeof(wchar_t));
+					out[min(maxLength - 1, wout.str().length())] = 0;
 				}
 				else
 				{
@@ -643,7 +656,7 @@ STDAPI ExtructText(LPCTSTR fn, int maxLength, LPTSTR out)
 				std::cout << "LoadIFilter: Insufficient memory or other resources to complete the operation.";
 				return hr;
 			case E_FAIL:
-				std::cout << "LoadIFilter: Unknown error.";
+				std::cout << "LoadIFilter: Unknown error.\r\n";
 				return hr;
 			case FILTER_E_PASSWORD:
 				std::cout << "LoadIFilter:Access has been denied because of password protection or similar security measures.";
@@ -652,7 +665,7 @@ STDAPI ExtructText(LPCTSTR fn, int maxLength, LPTSTR out)
 				std::cout << "LoadIFilter: Unable to access file.";
 				return hr;
 			default:
-				std::cout << "LoadIFilter:  Unexpected error.";
+				std::cout << "LoadIFilter:  Unexpected error." << std::hex << hr << std::endl;
 				return hr;
 			}
 		}

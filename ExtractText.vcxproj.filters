@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ExtractText.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextExtractor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Classic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -29,14 +23,6 @@
     <None Include="ExtractText.def">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="TextExtractor.rgs">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Midl Include="ExtractText.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ExtractText.rc">
@@ -44,13 +30,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dispimpl2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextExtractor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
